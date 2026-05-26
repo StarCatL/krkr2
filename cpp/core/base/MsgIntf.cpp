@@ -9,7 +9,7 @@
 // Definition of Messages and Message Related Utilities
 //---------------------------------------------------------------------------
 #include "tjsCommHead.h"
-
+#include "ApplicationSpecialPath.h"
 #include "tjsError.h"
 //---------------------------------------------------------------------------
 // import message strings
@@ -23,7 +23,6 @@
 
 #include "MsgIntf.h"
 #include "DebugIntf.h"
-#include "ApplicationSpecialPath.h"
 
 //---------------------------------------------------------------------------
 // TVPFormatMessage

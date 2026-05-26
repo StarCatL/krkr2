@@ -1,6 +1,6 @@
 name: Code Format Check
 
-on:  
+on:
   workflow_dispatch:
 
   push:

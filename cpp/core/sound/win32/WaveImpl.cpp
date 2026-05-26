@@ -10,14 +10,9 @@
 //---------------------------------------------------------------------------
 #include "tjsCommHead.h"
 
-#if 0
-#include <mmsystem.h>
-#include <mmreg.h>
-#endif
-
 #include <math.h>
 #include <algorithm>
-#include "SystemControl.h"
+#include "impl/SystemControl.h"
 #include "DebugIntf.h"
 #include "MsgIntf.h"
 #include "StorageIntf.h"
@@ -1818,8 +1813,8 @@ tTVPWaveSoundBufferDecodeThread::~tTVPWaveSoundBufferDecodeThread() {
     SetPriority(TVPDecodeThreadHighPriority);
     Running = false;
     Terminate();
+    Event.Set();
     Resume();
-    // Event.Set();
     WaitFor();
 }
 //---------------------------------------------------------------------------
@@ -2152,7 +2147,7 @@ void tTJSNI_WaveSoundBuffer::CreateSoundBuffer() {
                 TryCreateSoundBuffer(use3d);
             } catch(eTJSError &e) {
                 failed = true;
-                msg = e.GetMessage();
+                msg = e.getMessage();
             }
 
             if(failed || !SoundBuffer) {
@@ -2165,7 +2160,7 @@ void tTJSNI_WaveSoundBuffer::CreateSoundBuffer() {
                     firstformat = TVPGetSoundBufferFormatString(InputFormat);
                     failed = true;
                     firstfailed = true;
-                    msg = e.GetMessage();
+                    msg = e.getMessage();
                 }
             }
 
@@ -2178,7 +2173,7 @@ void tTJSNI_WaveSoundBuffer::CreateSoundBuffer() {
                     TryCreateSoundBuffer(use3d);
                 } catch(eTJSError &e) {
                     failed = true;
-                    msg = e.GetMessage();
+                    msg = e.getMessage();
                 }
                 if(!failed)
                     forcemode = 1;
@@ -2193,7 +2188,7 @@ void tTJSNI_WaveSoundBuffer::CreateSoundBuffer() {
                     TryCreateSoundBuffer(use3d);
                 } catch(eTJSError &e) {
                     failed = true;
-                    msg = e.GetMessage();
+                    msg = e.getMessage();
                 }
                 if(!failed)
                     forcemode = 2;
