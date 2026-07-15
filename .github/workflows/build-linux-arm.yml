@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-linux-arm64:
-    runs-on: ubuntu-24.04-arm   # GitHub 原生 ARM64 运行器
+    runs-on: ubuntu-24.04-arm    # GitHub 原生 ARM64 运行器
     env:
       VCPKG_ROOT: ${{ github.workspace }}/.act/vcpkg
     steps:
@@ -46,12 +46,9 @@ jobs:
 
       - name: Build Linux (ARM64)
         run: |
-          cmake --preset="Linux Release Config" -DENABLE_TESTS=OFF -DBUILD_TOOLS=OFF
+          # 禁用 FMOD，因为其预编译库为 x86 架构，无法在 ARM 上链接
+          cmake --preset="Linux Release Config" -DENABLE_TESTS=OFF -DBUILD_TOOLS=OFF -DENABLE_FMOD=OFF
           cmake --build --preset="Linux Release Build"
-          
-          # 复制 FMOD 库（如果有）
-          cp $(find out/linux/release/ -name libfmod.so) out/linux/release/bin/krkr2 || true
-          cp $(find out/linux/release/ -name libfmodL.so) out/linux/release/bin/krkr2 || true
 
       - name: Upload artifacts
         if: success()
