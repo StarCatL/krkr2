@@ -4,11 +4,6 @@ on:
   workflow_call:
   workflow_dispatch:
 
-env:
-  # 硬编码 NuGet 源，指向你的 GitHub Packages
-  VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/2468785842/index.json,readwrite"
-  VCPKG_INSTALL_OPTIONS: "--debug"
-
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -60,21 +55,6 @@ jobs:
           fi
           
           ${{ env.VCPKG_ROOT }}/bootstrap-vcpkg.sh
-
-      - name: Add NuGet sources
-        shell: bash
-        run: |
-          # 使用仓库所有者作为用户名，与 NUGET_API_KEY 对应
-          mono `${{ env.VCPKG_ROOT }}/vcpkg fetch nuget | tail -n 1` \
-            sources add \
-            -Source "https://nuget.pkg.github.com/2468785842/index.json" \
-            -StorePasswordInClearText \
-            -Name GitHubPackages \
-            -UserName "2468785842" \
-            -Password "${{ secrets.NUGET_API_KEY }}"
-          mono `${{ env.VCPKG_ROOT }}/vcpkg fetch nuget | tail -n 1` \
-            setapikey "${{ secrets.NUGET_API_KEY }}" \
-            -Source "https://nuget.pkg.github.com/2468785842/index.json"
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.18
